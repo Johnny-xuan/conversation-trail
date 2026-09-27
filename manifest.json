@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Conversation Trail for ChatGPT",
+  "short_name": "Conversation Trail",
+  "version": "0.1.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwQunTCMG8j9CJTNGeBl6EZX9Zc5dxsqYnEkmcn++/Qr4qv7pQGFGfrPSD8ZW3XG3JMznQFLFwYhGUXtuea40FC8caKImWU+q0/BkSlGEDxHFoVvPM+NBV0gLd9hiLx90/6ZdDmNqwY4+4JA+r3J828Or10FjXrcb8iEmc8C+hNGNlCulGBrEC8sn7NHNfpqpuHuOciPIaa103iaNB7K20e8ni27KmlFHYG4eW/nzKwypkDT20Daba7aY44XiZKBJClFE7bKIdA2OI3LavplMpP3oey7AKD31hRVrgx6PtpM8HNjy2aDdVdJWyOl1e0DaO/lngXCW3uRVFWlnqXvSAwIDAQAB",
+  "minimum_chrome_version": "116",
+  "description": "为 ChatGPT 长对话提供问题轨迹、回复大纲与本地系统音频声浪。",
+  "permissions": [
+    "activeTab",
+    "nativeMessaging",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*"
+  ],
+  "action": {
+    "default_title": "开启 Conversation Trail 系统音频可视化",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon-16.png",
+      "32": "assets/icon-32.png",
+      "48": "assets/icon-48.png",
+      "128": "assets/icon-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "icons": {
+    "16": "assets/icon-16.png",
+    "32": "assets/icon-32.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*"
+      ],
+      "js": [
+        "src/content/dom-adapter.js",
+        "src/content/sidebar.js",
+        "src/content/message-outline.js",
+        "src/content/audio-visualizer.js",
+        "src/content/index.js"
+      ],
+      "css": [
+        "src/content/styles.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

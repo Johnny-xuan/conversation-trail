@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conversation Trail</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="brand">
+          <img src="../../assets/icon-32.png" alt="">
+          <div>
+            <h1>Conversation Trail</h1>
+            <p id="page-state" class="page-state">
+              <span class="page-state__dot"></span>
+              <span id="page-state-label">正在读取当前页面</span>
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <section class="feature-summary" aria-label="页面功能">
+        <div>
+          <strong>回复大纲</strong>
+          <span>左侧 · 定位当前回复标题</span>
+        </div>
+        <div>
+          <strong>问题轨迹</strong>
+          <span>右侧 · 定位每次提问</span>
+        </div>
+      </section>
+
+      <div class="section-label">可选功能</div>
+      <section class="setting">
+        <div class="setting__copy">
+          <label for="audio-toggle">系统音频声浪</label>
+          <p>跟随 Mac 的声音。开关设置会自动保存，适用于所有 ChatGPT 页面。</p>
+        </div>
+        <label class="switch" aria-label="系统音频声浪">
+          <input id="audio-toggle" type="checkbox" disabled>
+          <span class="switch__track"></span>
+        </label>
+      </section>
+
+      <div id="status" class="status" data-tone="neutral" role="status">正在读取已保存的设置…</div>
+      <button id="retry-connection" class="connection-action" type="button" hidden>重新连接</button>
+
+      <footer>
+        <span>仅保存开关选择。音频只在本机处理，不录音、不保存、不上传。</span>
+        <span id="version"></span>
+      </footer>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

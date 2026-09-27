@@ -1,0 +1,18 @@
+{
+  "name": "conversation-trail",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Conversation trails, response outlines, and local audio visualization for ChatGPT",
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "engine:build": "./native/macos/build-app.sh",
+    "engine:test": "./native/macos/test-engine.sh",
+    "release:build": "python3 native/macos/package-release.py",
+    "engine:install": "./native/macos/install-app.sh",
+    "relay:install": "./native/macos/install-relay.sh",
+    "relay:uninstall": "./native/macos/uninstall.sh"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.1"
+  }
+}

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conversation Trail · 导航验证</title>
+<link rel="stylesheet" href="../src/content/styles.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; color: #27313d; background: #fff; font: 16px/1.8 system-ui, sans-serif; }
+  .native-sidebar { position: fixed; inset: 0 auto 0 0; width: 220px; padding: 28px 22px; background: #f5f6f8; border-right: 1px solid #e5e7eb; }
+  .native-sidebar h1 { font-size: 18px; }
+  .native-sidebar button { display: block; width: 100%; margin: 12px 0; padding: 10px; border: 1px solid #d5dbe3; border-radius: 9px; background: white; cursor: pointer; }
+  .native-sidebar small { color: #637185; }
+  main { margin-left: 220px; height: 100vh; }
+  .thread-scroll-container { height: 100%; overflow-y: auto; display: flex; flex-direction: column-reverse; }
+  .thread { flex-shrink: 0; width: min(690px, calc(100% - 90px)); margin: 0 auto; padding: 70px 0 160px; }
+  .turn { margin-bottom: 90px; }
+  .block { display: contents; }
+  [data-user-message-bubble] { margin: 0 0 40px auto; padding: 14px 22px; width: fit-content; max-width: 90%; border-radius: 20px; background: #eff3f7; }
+  [data-conversation-role] { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .content-section { min-height: 410px; border-bottom: 1px solid #edf0f4; padding: 20px 0; }
+  h2 { font-size: 24px; } h3 { font-size: 19px; }
+  .note { padding: 18px; border-left: 3px solid #648bc0; background: #f7f9fc; }
+  @media (max-width: 760px) { .native-sidebar { width: 160px; padding: 16px 10px; } main { margin-left: 160px; } .thread { width: calc(100% - 56px); } }
+</style>
+<aside class="native-sidebar">
+  <h1>Conversation Trail</h1>
+  <small>合成测试内容 · 使用新版消息结构和反向滚动容器</small>
+  <button data-action="replace">模拟切换会话</button>
+  <button data-action="stream">模拟流式新增标题</button>
+  <button data-action="pulse">短音响应</button>
+  <button data-action="audio">播放合成立体声频谱</button>
+  <button data-action="sustain">持续音响应</button>
+  <button data-action="silence">静音，保持连接</button>
+  <button data-action="add">新增一轮提问</button>
+  <button data-action="empty">切到空白会话</button>
+</aside>
+<main></main>
+<script>
+  let count = 8;
+  let generation = 0;
+  let audioTimer = 0;
+  function stopAudioDemo() {
+    clearInterval(audioTimer);
+    clearTimeout(audioTimer);
+    audioTimer = 0;
+    document.querySelector('[data-action="audio"]').textContent = '播放合成立体声频谱';
+  }
+
+  const SILENT_SPECTRUM = Object.freeze(Array(24).fill(0));
+  function syntheticSpectrum(bass, mid, treble) {
+    const bell = (band, center, width) => Math.exp(-0.5 * ((band - center) / width) ** 2);
+    return Array.from({ length: 24 }, (_, band) => Math.min(1,
+      bass * bell(band, 2.5, 2.1)
+      + mid * bell(band, 11, 2.7)
+      + treble * bell(band, 20, 1.9)
+    ));
+  }
+  function syntheticChannel(bands) {
+    return {
+      level: Math.sqrt(bands.reduce((sum, value) => sum + value * value, 0) / bands.length),
+      peak: Math.max(...bands),
+      bands
+    };
+  }
+  function sendSyntheticSpectrum(left = SILENT_SPECTRUM, right = SILENT_SPECTRUM, active = true) {
+    globalThis.__CHATGPT_HELPER__?.audioVisualizer?.applyLevel({
+      active,
+      channels: active ? [syntheticChannel(left), syntheticChannel(right)] : [],
+      timestamp: Date.now() / 1000
+    });
+  }
+  function turn(index) {
+    const question = index === 1 ? '这个插件为什么能显示提问目录？' : index === 2 ? '回复大纲如何跟随我正在阅读的内容？' : `新增问题 ${index}`;
+    const titles = index === 1 ? ['读取页面中的用户发言', '建立目录与消息的对应关系', '点击目录定位原消息'] : ['识别当前正在阅读的回复', '提取回复内的章节标题', '在长对话中切换大纲'];
+    const key = `${generation}-${index}`;
+    return `<div class="turn"><div class="block">
+      <div data-chatgpt-search-unit-key="turn-${key}:0:user" data-chatgpt-search-message-ids="user-${key}"><div data-content-search-unit-key="turn-${key}:0:user"><div data-user-message-bubble="true"><div data-markdown-text-tone="user-message" class="MarkdownRoot-example"><p>${question}</p></div></div></div></div>
+      </div><div class="block"><div data-chatgpt-search-unit-key="turn-${key}:1:assistant" data-chatgpt-search-message-ids="assistant-${key}"><h4 class="sr-only" data-conversation-role="assistant">ChatGPT said:</h4><div data-chatgpt-selection-message-id="assistant-${key}"><div class="MarkdownRoot-example">${titles.map((title, i) => `<section class="content-section"><h2>${title}</h2><p>这是第 ${index} 条回复的第 ${i + 1} 个章节。两侧导航使用与真实扩展相同的脚本和样式。</p><h3>步骤 ${index}.${i + 1}</h3><div class="note">点击右侧问题目录跳转到提问；左侧大纲应随当前回复变化，点击章节后应停在正确位置。</div></section>`).join('')}</div></div></div></div></div>`;
+  }
+  function replaceConversation() {
+    const main = document.createElement('main');
+    main.innerHTML = `<div class="thread-scroll-container"><div class="thread">${Array.from({ length: count }, (_, index) => turn(index + 1)).join('')}</div></div>`;
+    document.querySelector('main').replaceWith(main);
+  }
+  replaceConversation();
+  document.addEventListener('click', event => {
+    const action = event.target.dataset.action;
+    if (action === 'replace') { generation++; count = 8; replaceConversation(); }
+    if (action === 'stream') document.querySelector('.thread .turn:last-child [data-chatgpt-selection-message-id]')?.insertAdjacentHTML('beforeend', '<h2>流式新增的章节</h2><p>目录应自动出现这一项。</p>');
+    if (action === 'pulse' || action === 'sustain' || action === 'silence') {
+      stopAudioDemo();
+      let left = SILENT_SPECTRUM;
+      let right = SILENT_SPECTRUM;
+      if (action === 'pulse') {
+        left = syntheticSpectrum(0.95, 0.42, 0.12);
+        right = syntheticSpectrum(0.38, 0.88, 0.46);
+      } else if (action === 'sustain') {
+        left = syntheticSpectrum(0.34, 0.68, 0.22);
+        right = syntheticSpectrum(0.56, 0.3, 0.72);
+      }
+      const send = () => sendSyntheticSpectrum(left, right);
+      send();
+      if (action === 'sustain') audioTimer = setInterval(send, 20);
+      if (action === 'pulse') audioTimer = setTimeout(() => {
+        stopAudioDemo();
+        sendSyntheticSpectrum();
+      }, 80);
+    }
+    if (action === 'audio') {
+      if (audioTimer) {
+        stopAudioDemo();
+        sendSyntheticSpectrum(undefined, undefined, false);
+      } else {
+        const startedAt = performance.now();
+        audioTimer = setInterval(() => {
+          // Synthetic stereo spectrum only: this page does not capture or analyze real audio.
+          const beat = (performance.now() - startedAt) / 500;
+          const index = Math.floor(beat) % 8;
+          const phase = beat % 1;
+          const bassAttack = [0.96, 0.12, 0.72, 0.1, 0.84, 0.12, 0.58, 0][index] * Math.exp(-phase * 8);
+          const midAttack = [0.2, 0.62, 0.28, 0.78, 0.42, 0.68, 0.36, 0][index] * Math.exp(-phase * 6);
+          const trebleAttack = [0.48, 0.32, 0.86, 0.4, 0.7, 0.34, 0.92, 0][index] * Math.exp(-phase * 13);
+          const heldMid = index === 4 && phase < 0.65 ? 0.24 : 0;
+          const left = syntheticSpectrum(bassAttack, Math.max(heldMid, midAttack * 0.72), trebleAttack * 0.46);
+          const right = syntheticSpectrum(bassAttack * 0.54, Math.max(heldMid * 0.8, midAttack), trebleAttack * 0.94);
+          sendSyntheticSpectrum(left, right);
+        }, 20);
+        event.target.textContent = '停止合成频谱演示';
+      }
+    }
+    if (action === 'add') document.querySelector('.thread')?.insertAdjacentHTML('beforeend', turn(++count));
+    if (action === 'empty') document.querySelector('main').innerHTML = '<p style="padding:100px">开始新的对话</p>';
+  });
+</script>
+<script src="../src/content/dom-adapter.js"></script>
+<script src="../src/content/sidebar.js"></script>
+<script src="../src/content/message-outline.js"></script>
+<script src="../src/content/audio-visualizer.js"></script>
+<script src="../src/content/index.js"></script>
+</html>

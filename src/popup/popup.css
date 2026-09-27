@@ -1,0 +1,257 @@
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 348px;
+  margin: 0;
+  background: Canvas;
+  color: CanvasText;
+}
+
+main {
+  padding: 18px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.page-state {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0 0;
+  color: #737373;
+  font-size: 11px;
+}
+
+.page-state__dot {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #a3a3a3;
+}
+
+.page-state[data-active="true"] .page-state__dot {
+  background: #22c55e;
+}
+
+.feature-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 17px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, CanvasText 10%, transparent);
+  border-radius: 13px;
+  background: color-mix(in srgb, CanvasText 10%, transparent);
+}
+
+.feature-summary div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px;
+  background: Canvas;
+}
+
+.feature-summary strong {
+  font-size: 12px;
+}
+
+.feature-summary span {
+  color: #737373;
+  font-size: 10px;
+}
+
+.section-label {
+  margin: 18px 2px 7px;
+  color: #737373;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px;
+  border: 1px solid color-mix(in srgb, CanvasText 12%, transparent);
+  border-radius: 15px;
+  background: color-mix(in srgb, CanvasText 4%, Canvas);
+}
+
+.setting__copy label {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.setting__copy p {
+  margin: 5px 0 0;
+  color: #737373;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.switch {
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.switch__track {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: #d4d4d4;
+  transition: background-color 140ms ease;
+}
+
+.switch__track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+  transition: transform 140ms ease;
+}
+
+.switch input:checked + .switch__track {
+  background: #525252;
+}
+
+.switch input:checked + .switch__track::after {
+  transform: translateX(18px);
+}
+
+.switch input:disabled + .switch__track {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.switch input:focus-visible + .switch__track {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.status {
+  min-height: 34px;
+  margin-top: 12px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  color: #737373;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.status[data-tone="active"] {
+  background: rgb(34 197 94 / 10%);
+  color: #15803d;
+}
+
+.status[data-tone="waiting"] {
+  background: rgb(245 158 11 / 10%);
+  color: #a16207;
+}
+
+.status[data-tone="error"] {
+  background: rgb(239 68 68 / 10%);
+  color: #b91c1c;
+}
+
+.connection-action {
+  margin: 4px 11px 0;
+  padding: 6px 10px;
+  border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+  border-radius: 7px;
+  background: Canvas;
+  color: CanvasText;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.connection-action:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.connection-action:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
+footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, CanvasText 10%, transparent);
+  color: #737373;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+footer span:first-child {
+  max-width: 250px;
+}
+
+#version {
+  flex: 0 0 auto;
+}
+
+@media (prefers-color-scheme: dark) {
+  .setting__copy p,
+  .status,
+  footer,
+  .page-state,
+  .feature-summary span,
+  .section-label {
+    color: #a3a3a3;
+  }
+
+  .switch__track {
+    background: #525252;
+  }
+
+  .switch input:checked + .switch__track {
+    background: #a3a3a3;
+  }
+}
