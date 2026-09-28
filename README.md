@@ -1,107 +1,57 @@
 # Conversation Trail
 
-为 ChatGPT 长对话提供问题轨迹、回复大纲与可选的系统音频声浪，让阅读和回看更轻松。
+中文 | [English](README.en.md)
 
-**v0.1.0** · [下载](https://github.com/Johnny-xuan/conversation-trail/releases)
+本人经常在同一个 ChatGPT 对话里聊很久。网页端自带的 conversation trail 不够稳定，想回头找某个问题，只能在长页面里反复滚动。这就是为什么会有这个插件。
 
-## 主要功能
+它给长对话加了两条导航：左边看回复，右边找问题。
 
-### 问题轨迹
+- **回复大纲**：列出当前回答里的标题，点击就能跳到对应位置。回答还在生成时，大纲也会跟着更新。
+- **问题轨迹**：列出这次对话里问过的问题，点击就能回到那一轮。
+- **声浪模式（可选）**：按 ChatGPT 桌面端的声浪效果 1:1 复刻。播放音乐时，两侧导航会跟随左右声道一起律动，让长对话多一点沉浸感和陪伴感。不开启声浪、不安装音频组件，也不影响导航功能。
 
-在页面右侧整理当前对话中的用户提问。展开轨迹即可浏览问题，点击直接跳转；滚动阅读时，当前位置会同步标记，方便回看前面的讨论。
+两条导航平时收在页面边缘，鼠标移上去才会展开。小圆点表示当前读到的位置。支持深色模式、键盘操作和系统的“减少动态效果”设置。
 
-### 回复大纲
+[![Conversation Trail 中文演示：安装、问题轨迹、回复大纲与声浪](demo/conversation-trail-zh.jpg)](demo/conversation-trail-zh.mp4)
 
-在页面左侧展示当前正在阅读的回复章节，支持多级标题。点击标题即可定位到对应内容，不必在长回答中反复寻找。
-
-两侧轨迹平时收起为简洁的细线，展开时显示完整内容。独立的阅读定位点始终标记当前位置，并支持键盘操作、深色模式和系统的减少动态效果设置。
-
-### 系统音频声浪
-
-开启声浪后，两侧细线会跟随 Mac 正在播放的声音变化：左侧大纲对应左声道，右侧问题轨迹对应右声道，不同位置呈现不同频段的起伏。
-
-声浪来自真实音频，不是预设动画。静音时线条恢复平静，操作目录时让位于导航，阅读定位点不随声浪移动。
-
-这是一个可选功能：默认关闭，开启后会记住你的选择；不安装本地音频组件，也能完整使用问题轨迹和回复大纲。
+[观看中文演示](demo/conversation-trail-zh.mp4) · 约 1 分 32 秒 · 中文配音，中英字幕
 
 ## 安装
 
-需要 Google Chrome 116 或更新版本。系统音频声浪需要 macOS 13 或更新版本；当前下载包面向 Apple Silicon Mac。
+需要 **Chrome 116+**。如果要使用声浪，还需要 **macOS 13+**；当前下载包适用于 **Apple Silicon Mac**。
 
-1. 从 [Releases](https://github.com/Johnny-xuan/conversation-trail/releases) 下载 ZIP，解压到准备长期保留的位置。
-2. 如需声浪功能，双击包内的 **Conversation Trail Audio.pkg**，按提示安装。安装器会一并安装 Local Audio Engine 和连接组件，过程中需要管理员授权。
+1. 从 [Releases](https://github.com/Johnny-xuan/conversation-trail/releases) 下载 ZIP 并解压。
+2. 如果要使用声浪，双击 **Conversation Trail Audio.pkg** 完成安装。只用导航可以跳过这一步。
 3. 打开 `chrome://extensions`，开启右上角的“开发者模式”。
-4. 点击“加载已解压的扩展程序”，选择包内的 **Conversation Trail Extension** 文件夹。
-5. 打开或刷新 ChatGPT 页面，即可使用两侧导航。
+4. 点击“加载已解压的扩展程序”，选择压缩包里的 **Conversation Trail Extension** 文件夹。
+5. 打开或刷新 [ChatGPT](https://chatgpt.com/)。
 
-**加载后不要删除或移动扩展文件夹**，Chrome 仍需要从中读取文件。
+Chrome 会直接读取这个文件夹，所以安装后不要移动或删除它。
 
-带有 `-preview` 后缀的安装包尚未完成 Apple 公证，macOS 可能显示安全提示或阻止安装。请以 Release 中标注的签名与公证状态为准。
+带 `-preview` 后缀的安装包尚未完成 Apple 公证，macOS 可能会拦截安装。具体情况以对应的 Release 说明为准。
 
-## 使用声浪
+## 使用
 
-1. 安装本地音频组件后，在 ChatGPT 页面点击 Chrome 工具栏中的扩展图标。
-2. 开启“系统音频声浪”。Local Audio Engine 会自动启动，无需提前打开应用。
-3. 首次使用时，按 macOS 提示授予系统音频权限；授权后自动继续连接。
-4. 播放音乐或其他系统声音，即可看到两侧轨迹的变化。
+- **回到之前的问题**：把鼠标移到右侧细线上，展开问题列表，点击问题即可回到对应的一轮对话。
+- **查看当前回复的大纲**：左侧会列出当前回答中的标题，点击标题即可跳转。没有标题的回答不会显示大纲。
+- **确认阅读位置**：滚动页面时，两侧的小圆点会跟随当前问题和当前标题。
 
-开关适用于当前 Chrome 配置中的所有 ChatGPT 页面。刷新页面、重新打开 ChatGPT 或重启 Chrome 后，都会按保存的选择恢复；主动关闭后也会记住关闭状态。
+要开启声浪，点击 Chrome 工具栏里的扩展图标，再打开“系统音频声浪”。Local Audio Engine 会自动启动；第一次使用时，按 macOS 的提示授予系统音频权限即可。之后播放音乐或其他系统声音，两侧导航就会跟着声音起伏。
 
-关闭最后一个 ChatGPT 页面会暂停音频订阅，但保留开关选择。等待授权或连接暂时失败时，也不会把已保存的开启状态改为关闭；需要时可在扩展菜单中选择“继续授权”或“重新连接”。
+声浪开关会自动保存，并对当前 Chrome 配置中的所有 ChatGPT 页面生效。刷新页面或重启 Chrome 后不需要重新开启。遇到授权或连接问题时，可以在扩展菜单中点击“继续授权”或“重新连接”。
 
-## 隐私与权限
+## 隐私
 
-- 音频只在本机处理，不录音，不保存音频或声浪历史。
-- 不识别语音、不转写内容，不上传音频或声浪数据。
-- 扩展只在当前 Chrome 配置中保存声浪开关选择。
-- 本地音频服务只接受本机连接，不向局域网开放。
-- 多个页面共享音频订阅；没有客户端订阅时，Engine 停止捕获。
+扩展不会保存聊天内容，只会保存声浪开关的状态。
 
-macOS 通过“屏幕与系统音频录制”权限提供系统声音。Local Audio Engine 只接收音频，不捕获画面，不截图，也不保存屏幕内容。
+开启声浪后，Local Audio Engine 会在本机内存中把系统音频转换成频谱数据。它不会把音频录成文件，不做语音识别或转写，也不会上传音频或频谱数据。
 
-## 从源码运行与构建
-
-完整的本地音频构建需要 macOS、Node.js、Python 3 和 Xcode 命令行工具。
-
-```sh
-npm ci
-npm run engine:install
-npm run relay:install
-```
-
-随后在 `chrome://extensions` 中加载包含 `manifest.json` 的项目根目录。更新代码后，重新加载扩展并刷新 ChatGPT 页面。
-
-生成包含音频安装器和扩展的统一 ZIP：
-
-```sh
-npm run release:build
-```
-
-产物位于 `dist/`，默认使用当前 Mac 的架构。可通过 `LOCAL_AUDIO_ENGINE_ARCH=arm64` 或 `x86_64` 指定构建目标。
-
-<details>
-<summary>签名、公证与开发检查</summary>
-
-默认构建生成未公证的预览包。使用 Developer ID 签名并完成 Apple 公证：
-
-```sh
-LOCAL_AUDIO_ENGINE_SIGNING_IDENTITY="Developer ID Application: Your Name (TEAMID)" \
-CONVERSATION_TRAIL_INSTALLER_IDENTITY="Developer ID Installer: Your Name (TEAMID)" \
-CONVERSATION_TRAIL_NOTARY_PROFILE="your-notary-keychain-profile" \
-npm run release:build
-```
-
-公证凭据需先通过 `xcrun notarytool store-credentials` 保存到钥匙串，不写入项目。构建脚本会等待公证成功并附加票据，再生成不带 `-preview` 后缀的 ZIP。
-
-```sh
-npm test
-npm run engine:test
-```
-
-音频服务独立于浏览器扩展，通过本地协议提供数据。接口与生命周期说明见 [Local Audio Engine Protocol](docs/local-audio-engine-protocol.md)。
-
-</details>
+macOS 把这项权限归在“屏幕与系统音频录制”中，但 Local Audio Engine 只接收音频，不捕获画面。音频服务只接受本机连接；没有客户端使用时，会自动停止捕获。
 
 ## 致谢
 
-感谢 [grid-oaa/ChatGPT-helper](https://github.com/grid-oaa/ChatGPT-helper) 提供的问题目录与回复大纲设计基础。
+本项目 fork 自 [grid-oaa/ChatGPT-helper](https://github.com/grid-oaa/ChatGPT-helper)，并在此基础上继续开发。
+
+## 贡献
+
+发现问题或有改进想法，欢迎提交 [Issue](https://github.com/Johnny-xuan/conversation-trail/issues) 或 PR。如果改动比较大，请先开 Issue 说明使用场景，方便一起确认方向。
