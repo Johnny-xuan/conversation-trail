@@ -12,9 +12,9 @@
 
 两条导航平时收在页面边缘，鼠标移上去才会展开。小圆点表示当前读到的位置。支持深色模式、键盘操作和系统的“减少动态效果”设置。
 
-[![Conversation Trail 中文演示：安装、问题轨迹、回复大纲与声浪](demo/conversation-trail-zh.jpg)](demo/conversation-trail-zh.mp4)
+https://github.com/user-attachments/assets/7519b014-d2c3-42f2-bca4-13dc52a219a7
 
-[观看中文演示](demo/conversation-trail-zh.mp4) · 约 1 分 32 秒 · 中文配音，中英字幕
+约 1 分 32 秒 · 中文配音，中英字幕
 
 ## 安装
 

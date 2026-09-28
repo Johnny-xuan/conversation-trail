@@ -12,9 +12,9 @@ It adds two simple ways to navigate a long conversation: answers on the left, qu
 
 The rails stay tucked against the edges of the page until you hover over them. A small dot marks your current reading position. Dark mode, keyboard navigation, and the system’s reduced-motion setting are supported.
 
-[![Conversation Trail English demo: installation, question trail, response outline, and audio mode](demo/conversation-trail-en.jpg)](demo/conversation-trail-en.mp4)
+https://github.com/user-attachments/assets/d7cd972e-8878-4754-aed0-7aa20893c797
 
-[Watch the English demo](demo/conversation-trail-en.mp4) · About 1 min 32 sec · English narration, Chinese–English subtitles
+About 1 min 32 sec · English narration, Chinese–English subtitles
 
 ## Installation
 
